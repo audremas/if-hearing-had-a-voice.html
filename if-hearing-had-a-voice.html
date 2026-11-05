@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>If Hearing Had a Voice</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px 16px;
+  font-family: "Trebuchet MS", Arial, sans-serif;
+  background: linear-gradient(145deg, #f7f8ef, #f9e9ed);
+  color: #526b58;
+}
+
+.card {
+  width: 100%;
+  max-width: 440px;
+  text-align: center;
+  padding: 38px 25px 30px;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid #e8e6d9;
+  border-radius: 30px;
+  box-shadow: 0 15px 45px rgba(91, 110, 91, 0.12);
+}
+
+.day-badge {
+  display: inline-block;
+  padding: 8px 16px;
+  margin-bottom: 20px;
+  background: #f7edf0;
+  border: 1px solid #ecd5dc;
+  border-radius: 50px;
+  color: #a67d8b;
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: #a67d8b;
+  margin-bottom: 17px;
+  font-weight: bold;
+}
+
+.icon {
+  font-size: 38px;
+  margin-bottom: 13px;
+}
+
+h1 {
+  font-size: clamp(27px, 7vw, 35px);
+  line-height: 1.2;
+  letter-spacing: 1px;
+  margin: 0 auto 12px;
+  color: #647e67;
+}
+
+.subtitle {
+  font-family: Georgia, serif;
+  font-style: italic;
+  color: #a77d8b;
+  font-size: 17px;
+  margin-bottom: 28px;
+}
+
+.intro {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #858b7e;
+  margin-bottom: 22px;
+}
+
+.reveal {
+  width: 100%;
+  border: none;
+  border-radius: 50px;
+  padding: 17px 14px;
+  background: #d99aaf;
+  color: white;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  cursor: pointer;
+  box-shadow: 0 7px 17px rgba(217, 154, 175, 0.28);
+  transition: transform 0.2s, background 0.2s;
+}
+
+.reveal:active {
+  transform: scale(0.97);
+}
+
+.reveal:hover {
+  background: #ca849d;
+}
+
+.player {
+  display: none;
+  margin-top: 24px;
+  padding: 20px 17px;
+  background: #f8f5ee;
+  border: 1px solid #eee7dd;
+  border-radius: 22px;
+  text-align: left;
+}
+
+.player-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.sound-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  height: 44px;
+  background: #e9d8de;
+  border-radius: 15px;
+  font-size: 21px;
+}
+
+.sound-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: #a77d8b;
+  margin-bottom: 5px;
+}
+
+.sound-title {
+  font-size: 15px;
+  font-weight: bold;
+  color: #647e67;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.play {
+  border: none;
+  border-radius: 50%;
+  width: 43px;
+  height: 43px;
+  flex-shrink: 0;
+  background: #d99aaf;
+  color: white;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+.timeline {
+  flex: 1;
+  min-width: 0;
+}
+
+input[type="range"] {
+  width: 100%;
+  accent-color: #d28ba4;
+  cursor: pointer;
+}
+
+.times {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: #939588;
+  margin-top: 3px;
+}
+
+.message {
+  margin-top: 24px;
+  padding: 20px 16px;
+  background: #f7edf0;
+  border-radius: 18px;
+}
+
+.message-label {
+  color: #b08091;
+  font-size: 10px;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+  font-weight: bold;
+}
+
+.message-text {
+  font-family: Georgia, serif;
+  font-size: 19px;
+  line-height: 1.5;
+  font-style: italic;
+  color: #657c67;
+}
+
+.footer {
+  margin-top: 25px;
+  color: #9a9b8d;
+  font-size: 11px;
+  letter-spacing: 1px;
+  line-height: 1.8;
+}
+
+.note {
+  margin-top: 12px;
+  color: #b08091;
+  font-size: 11px;
+  min-height: 15px;
+}
+
+.credits {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid #eee7dd;
+}
+
+.credits .uni {
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #647e67;
+}
+
+.credits .event {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: #a67d8b;
+  margin-top: 6px;
+  font-weight: bold;
+}
+
+.credits .by {
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: 13px;
+  color: #9a9b8d;
+  margin-top: 8px;
+}
+
+audio {
+  display: none;
+}
+</style>
+</head>
+
+<body>
+<main class="card">
+
+  <div class="day-badge">WORLD AUDIOLOGIST DAY</div>
+
+  <div class="eyebrow">A WORLD OF SOUND</div>
+  <div class="icon">♡</div>
+
+  <h1>IF HEARING<br>HAD A VOICE</h1>
+  <div class="subtitle">Every sound holds a story.</div>
+
+  <p class="intro">
+    Close your eyes for a moment.<br>
+    Your sound is waiting to be discovered…
+  </p>
+
+  <button class="reveal" id="revealButton">
+    REVEAL MY SOUND&nbsp; ♡
+  </button>
+
+  <section class="player" id="player">
+    <div class="player-top">
+      <div class="sound-icon" id="soundIcon">♫</div>
+      <div>
+        <div class="sound-label">YOUR SOUND</div>
+        <div class="sound-title" id="soundTitle">A Moment of Peace</div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="play" id="playButton" aria-label="Play audio">▶</button>
+
+      <div class="timeline">
+        <input
+          id="progress"
+          type="range"
+          min="0"
+          max="100"
+          value="0"
+          aria-label="Audio progress"
+        >
+        <div class="times">
+          <span id="currentTime">0:00</span>
+          <span id="duration">0:00</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="message" id="message" style="display:none;">
+    <div class="message-label">A MESSAGE FOR YOU</div>
+    <div class="message-text" id="messageText"></div>
+  </div>
+
+  <div class="note" id="note" aria-live="polite"></div>
+
+  <div class="footer">
+    PRESS PLAY. LISTEN. FEEL.<br>
+    <span style="color:#d19aad;">♡</span> Every sound matters.
+  </div>
+
+  <div class="credits">
+    <div class="uni">Princess Nourah bint Abdulrahman University</div>
+    <div class="event">WORLD AUDIOLOGIST DAY</div>
+    <div class="by">By: Remas</div>
+  </div>
+
+  <audio id="audio" preload="metadata" playsinline></audio>
+</main>
+
+<script>
+const sounds = [
+  {
+    title: "A Moment of Peace",
+    icon: "🌙",
+    url: "https://res.cloudinary.com/rldxsp75/video/upload/v1791890207/adhan.mp3.mp3",
+    message: "Some sounds bring peace straight to the soul."
+  },
+  {
+    title: "The Sound of Life",
+    icon: "🐦",
+    url: "https://res.cloudinary.com/rldxsp75/video/upload/v1791890207/birds.mp3.mp3",
+    message: "Even the smallest sound can make the world feel alive."
+  },
+  {
+    title: "Pure Happiness",
+    icon: "♡",
+    url: "https://res.cloudinary.com/rldxsp75/video/upload/v1791890207/child_laugh.mp3.mp3",
+    message: "A little laugh can bring so much joy."
+  },
+  {
+    title: "A Voice of Inspiration",
+    icon: "🎙️",
+    url: "https://res.cloudinary.com/rldxsp75/video/upload/v1791890207/crown_prince.mp3.mp3",
+    message: "One voice can inspire a nation and shape a future."
+  },
+  {
+    title: "The Voice of Home",
+    icon: "♡",
+    url: "https://res.cloudinary.com/rldxsp75/video/upload/v1791890207/family_welcome.mp3.mp3",
+    message: "Sometimes, the sweetest sound is the voice that feels like home."
+  }
+];
+
+const audio = document.getElementById("audio");
+const revealButton = document.getElementById("revealButton");
+const player = document.getElementById("player");
+const message = document.getElementById("message");
+const soundTitle = document.getElementById("soundTitle");
+const soundIcon = document.getElementById("soundIcon");
+const messageText = document.getElementById("messageText");
+const playButton = document.getElementById("playButton");
+const progress = document.getElementById("progress");
+const currentTime = document.getElementById("currentTime");
+const duration = document.getElementById("duration");
+const note = document.getElementById("note");
+
+let previousIndex = -1;
+
+function formatTime(seconds) {
+  if (!Number.isFinite(seconds)) return "0:00";
+
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+
+  return mins + ":" + String(secs).padStart(2, "0");
+}
+
+function updatePlayButton() {
+  playButton.textContent = audio.paused ? "▶" : "Ⅱ";
+  playButton.setAttribute(
+    "aria-label",
+    audio.paused ? "Play audio" : "Pause audio"
+  );
+}
+
+async function playAudio() {
+  try {
+    await audio.play();
+    note.textContent = "";
+  } catch (error) {
+    note.textContent = "Tap the play button to try the sound again.";
+  }
+
+  updatePlayButton();
+}
+
+revealButton.addEventListener("click", () => {
+  let index;
+
+  do {
+    index = Math.floor(Math.random() * sounds.length);
+  } while (sounds.length > 1 && index === previousIndex);
+
+  previousIndex = index;
+
+  const sound = sounds[index];
+
+  audio.pause();
+  audio.src = sound.url;
+  audio.load();
+
+  soundTitle.textContent = sound.title;
+  soundIcon.textContent = sound.icon;
+  messageText.textContent = sound.message;
+
+  player.style.display = "block";
+  message.style.display = "block";
+  note.textContent = "Your sound is ready… ♡";
+
+  progress.value = 0;
+  currentTime.textContent = "0:00";
+  duration.textContent = "0:00";
+
+  updatePlayButton();
+  playAudio();
+});
+
+playButton.addEventListener("click", () => {
+  if (audio.paused) {
+    playAudio();
+  } else {
+    audio.pause();
+    updatePlayButton();
+  }
+});
+
+audio.addEventListener("loadedmetadata", () => {
+  duration.textContent = formatTime(audio.duration);
+});
+
+audio.addEventListener("timeupdate", () => {
+  currentTime.textContent = formatTime(audio.currentTime);
+
+  if (Number.isFinite(audio.duration) && audio.duration > 0) {
+    progress.value = (audio.currentTime / audio.duration) * 100;
+  }
+});
+
+progress.addEventListener("input", () => {
+  if (Number.isFinite(audio.duration) && audio.duration > 0) {
+    audio.currentTime =
+      (Number(progress.value) / 100) * audio.duration;
+  }
+});
+
+audio.addEventListener("ended", updatePlayButton);
+
+audio.addEventListener("error", () => {
+  note.textContent =
+    "This sound could not load. Check the audio URL and try again.";
+  updatePlayButton();
+});
+</script>
+
+</body>
+</html>
